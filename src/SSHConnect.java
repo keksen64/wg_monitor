@@ -7,10 +7,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 public class SSHConnect {
+
     public static String getWgShow() {
-        // Параметры SSH
-        String user = "root";
-        String host = "91.245.224.164";
+        // Команда для выполнения локально
         String command = "wg show";
 
         // Форматирование текущей даты и времени
@@ -23,8 +22,8 @@ public class SSHConnect {
         StringBuilder errorBuilder = new StringBuilder();
 
         try {
-            // Запуск процесса SSH
-            ProcessBuilder processBuilder = new ProcessBuilder("ssh", user + "@" + host, command);
+            // Запуск процесса для выполнения команды локально
+            ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
             Process process = processBuilder.start();
 
             // Чтение стандартного вывода процесса
@@ -46,14 +45,14 @@ public class SSHConnect {
 
             // Ожидание завершения процесса
             int exitCode = process.waitFor();
-            System.out.println("SSH команда завершилась с кодом: " + exitCode);
+            System.out.println("Команда завершилась с кодом: " + exitCode);
 
             // Получение полного вывода
             String output = outputBuilder.toString();
             String errors = errorBuilder.toString();
 
             // Вывод стандартного вывода в консоль
-            System.out.println("OUTPUT:\n" + output);
+          //  System.out.println("OUTPUT:\n" + output);
 
             // Вывод ошибок, если они есть
             if (!errors.isEmpty()) {

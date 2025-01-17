@@ -14,6 +14,8 @@ public class InfluxAsyncSender extends Thread {
     public void run(){
         //traffic_receive_30_sec
         HttpSender.executePost("http://"+ "localhost" +":"+"8086"+"/write?db=wg_metric", type+",peer="+peer_ip+" value="+value);
+        System.out.println("url : "+ "http://"+ "localhost" +":"+"8086"+"/write?db=wg_metric");
+        System.out.println("body: "+ type+",peer="+peer_ip+" value="+value);
     }
 
 }

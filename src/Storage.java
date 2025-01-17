@@ -33,7 +33,7 @@ public class Storage {
 
             lastMap.put(allowedIps, snapValue);
         }
-        lastMap.forEach((key, value) -> System.out.println("Key: " + key + ", Value: " + value));
+       // lastMap.forEach((key, value) -> System.out.println("Key: " + key + ", Value: " + value));
     }
 
     private static long convertToMiB(double value, String unit) {
@@ -49,25 +49,11 @@ public class Storage {
         }
     }
 
-    public static void changeMap(){
-        prevMap=lastMap;
+    public static void changeMap() {
+        prevMap = new HashMap<>(lastMap);
         lastMap.clear();
     }
 
-//    public static void calculateToDeltaMap(){
-//        deltaMap.clear();
-//        for (Map.Entry<String, Long> entryLast : lastMap.entrySet()) {
-//            String key = entryLast.getKey();
-//            Long valueLast = entryLast.getValue();
-//
-//            // Проверяем, существует ли ключ в Map B
-//            if (prevMap.containsKey(key)) {
-//                Long valuePrev = prevMap.get(key);
-//                Long delta = valueLast - valuePrev;
-//                deltaMap.put(key, delta);
-//            }
-//        }
-//    }
 
     public static void calculateToDeltaMap1() {
         deltaMap.clear();
@@ -97,11 +83,11 @@ public class Storage {
             ClientSnapValue snapValue = entry.getValue();
 
             // Создание и запуск потока для отправки "received"
-            InfluxAsyncSender receivedSender = new InfluxAsyncSender("received", snapValue.getReceived(), peerIp);
+            InfluxAsyncSender receivedSender = new InfluxAsyncSender("receivedPer10s", snapValue.getReceived(), peerIp);
             receivedSender.start();
 
             // Создание и запуск потока для отправки "sent"
-            InfluxAsyncSender sentSender = new InfluxAsyncSender("sent", snapValue.getSent(), peerIp);
+            InfluxAsyncSender sentSender = new InfluxAsyncSender("sentPer10s", snapValue.getSent(), peerIp);
             sentSender.start();
         }
     }
