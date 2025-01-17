@@ -1,2 +1,6 @@
-package PACKAGE_NAME;public class MainClass {
+public class MainClass {
+    public static void main(String[] args) {
+        Scheduler sch = new Scheduler();
+        sch.run();
+    }
 }

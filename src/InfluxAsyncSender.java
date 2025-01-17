@@ -1,21 +1,19 @@
-package influx;
-
-import prepare.ConfigReader;
 
 public class InfluxAsyncSender extends Thread {
 
     private String type;
     private long value;
-    private int status;
+    private String peer_ip;
 
 //в отдельном потоке отправляет метрики в инфлюкс
-    public InfluxAsyncSender(String type, long value, int status) {
+    public InfluxAsyncSender(String type, long value, String  peer_ip) {
         this.type = type;
         this.value = value;
-        this.status = status;
+        this.peer_ip = peer_ip;
     }
     public void run(){
-        HttpSender.executePost("http://"+ ConfigReader.influxHost +":"+ConfigReader.influxPort+"/write?db="+ ConfigReader.influxDB, "LRTransaction40,Module=OW,TransactionName="+type+",Status_1="+status+" value=" + value);
+        //traffic_receive_30_sec
+        HttpSender.executePost("http://"+ "localhost" +":"+"8086"+"/write?db=wg_metric", type+",peer="+peer_ip+" value="+value);
     }
 
 }
