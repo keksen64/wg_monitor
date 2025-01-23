@@ -23,8 +23,8 @@ public class Scheduler extends Thread {
             long endMills = clock.millis();
             long diffMills = endMills - startMills;
             try {
-                if(diffMills<10000){
-                    Thread.sleep(10000-diffMills);
+                if(diffMills<60000){
+                    Thread.sleep(60000-diffMills);
                 }else {
                     System.out.println("Превышено время выполнения цикла");
                 }

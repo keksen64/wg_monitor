@@ -10,7 +10,7 @@ public class SSHConnect {
 
     public static String getWgShow() {
         // Команда для выполнения локально
-        String command = "wg show";
+        String command = "wg show "+ ConfigLoader.getInterfaceName();
 
         // Форматирование текущей даты и времени
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy_MM_dd_HH_mm_ss");

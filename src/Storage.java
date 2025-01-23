@@ -38,12 +38,18 @@ public class Storage {
 
     private static long convertToMiB(double value, String unit) {
         switch (unit) {
+            case "PiB":
+                return Math.round(value * 1024 * 1024 * 1024); // 1 PiB = 1024 * 1024 * 1024 MiB
+            case "TiB":
+                return Math.round(value * 1024 * 1024); // 1 TiB = 1024 * 1024 MiB
             case "GiB":
                 return Math.round(value * 1024);
             case "MiB":
                 return Math.round(value);
             case "KiB":
                 return Math.round(value / 1024);
+            case "B":
+                return Math.round(value / (1024 * 1024)); // 1 B = 1 / (1024 * 1024) MiB
             default:
                 throw new IllegalArgumentException("Неизвестная единица измерения: " + unit);
         }
@@ -82,13 +88,18 @@ public class Storage {
             String peerIp = entry.getKey();
             ClientSnapValue snapValue = entry.getValue();
 
-            // Создание и запуск потока для отправки "received"
-            InfluxAsyncSender receivedSender = new InfluxAsyncSender("receivedPer10s", snapValue.getReceived(), peerIp);
-            receivedSender.start();
+            if(snapValue.getReceived()>0){
+                // Создание и запуск потока для отправки "received"
+                InfluxAsyncSender receivedSender = new InfluxAsyncSender("receivedPer60s", snapValue.getReceived(), peerIp);
+                receivedSender.start();
+            }
 
-            // Создание и запуск потока для отправки "sent"
-            InfluxAsyncSender sentSender = new InfluxAsyncSender("sentPer10s", snapValue.getSent(), peerIp);
-            sentSender.start();
+            if(snapValue.getSent()>0){
+                // Создание и запуск потока для отправки "sent"
+                InfluxAsyncSender sentSender = new InfluxAsyncSender("sentPer60s", snapValue.getSent(), peerIp);
+                sentSender.start();
+            }
+
         }
     }
 
